@@ -1,0 +1,71 @@
+﻿@charset "utf-8";
+
+
+.Stage_base {
+	height:645px;
+	margin:30px 28px 0 30px;
+}
+
+.canvas_area {
+	position:relative;
+	width:544px;
+	height:544px;
+	background:url(../images/home/clock.png) no-repeat center center;
+	margin-left:308px;
+	z-index:10;
+	border-radius: 50%;
+}
+
+#canvas_int {
+	position: absolute;
+	top:0;
+	left:0;
+	width:544px;
+	height:544px;
+	-webkit-transform: rotate3d(0, 0, -1, 90deg);
+}
+
+.arrow_box {
+	position: absolute;
+	left:570px;
+	top:265px;
+	width:24px;
+	height:24px;
+	background:#d1d3d4;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
+	z-index:3;
+}
+
+.arr_hour,
+.arr_minute {
+	position: absolute;
+	background:#d1d3d4;
+}
+
+.arr_hour {
+	top:2px;
+	right:12px;
+	width:96px;
+	height:20px;
+	border-radius: 10px;
+	border-radius: 10px;
+	transform-origin: 100% 50%;
+	transition:  transform 8s linear;
+}
+
+
+.arr_minute {
+	bottom:12px;
+	left:6px;
+	width:12px;
+	height:114px;
+	-webkit-border-radius: 6px;
+			border-radius: 6px;
+	transform-origin: 50% 100%;
+	 	
+	transition:  transform 8s linear;   
+}
+
+
+

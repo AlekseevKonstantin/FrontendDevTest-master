@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title></title>
+    <link href="css/style_general.css" rel="stylesheet">
+    <link href="css/style_refract.css" rel="stylesheet">
+    <script src="js/jquery-1.8.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script>
+        $(function () {
+
+            var yellowArea = $('.drag_yellow'),
+                pItems = $('.map li'),
+                redArea = $('.drag_red'),
+                coorYArray = [],
+                prevIndex = -1,
+                curIndex = 0;
+
+            /* возвращает координаты центра */    
+            function getCC(el){
+
+                var xc =($(el).width() + $(el).offset().left + $(el).offset().left) / 2;
+                var yc = ($(el).height() + $(el).offset().top + $(el).offset().top) / 2;
+
+                return {xc: xc, yc: yc}; 
+            }
+
+            /* определяет положение объекта относительно некой области */
+            function isInnerEl(area, xc, yc){
+
+                if (xc > $(area).offset().left && 
+                    xc < $(area).offset().left+$(area).width()){
+
+                    if(yc > $(area).offset().top && 
+                       yc < $(area).offset().top+$(area).height()){
+
+                        return true;
+                    }   
+                }
+
+                return false;
+            }
+
+            function checkedInnerEl(area, elArray){
+
+                for (var i = 0; i < elArray.length; i++) {
+                    
+                    var coor = getCC(elArray[i]);
+
+                    if(isInnerEl(area, coor.xc, coor.yc)){
+                        
+                        $(elArray[i]).attr('data-in', i);
+                        coorYArray.push({yc:coor.yc,
+                                         el: elArray[i]});
+                    }
+                }
+
+            }
+
+            checkedInnerEl(yellowArea, pItems)
+            coorYArray.sort(function (a, b) {
+                if (a.yc > b.yc) return 1;
+                if (a.yc < b.yc) return -1;
+            })
+
+            $('.drag_red').draggable(
+
+            {axis:'y', 
+             containment: 'parent'}, 
+            
+            {drag: function(e, ui){
+
+                var top = ui.offset.top,
+                    bottom = ui.offset.top + $(this).height();
+
+                for (var i = 0; i < coorYArray.length; i++) {
+                        
+                    if(coorYArray[i].yc > top && coorYArray[i].yc < bottom){
+
+                        if(!$(coorYArray[i].el).hasClass('yellow-man')){
+
+                            $(coorYArray[i].el).addClass('yellow-man');
+                        }
+
+                    }else if(coorYArray[i].yc < top || coorYArray[i].yc > bottom){
+
+                        if($(coorYArray[i].el).hasClass('yellow-man')){
+
+                            $(coorYArray[i].el).removeClass('yellow-man');
+                        }
+                    }        
+                }    
+
+            }});
+
+        });
+    </script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="Stage_base">
+            <div class="map_area">
+                <ul class="map">
+                    <li></li>
+                    <li class="yellow"></li>
+                    <li class="yellow"></li>
+                    <li class="yellow"></li>
+                    <li class="yellow"></li>
+                    <li class="yellow"></li>
+                    <li></li>
+                    <li class="yellow"></li>
+                    <li></li>
+                </ul>
+                <div class="drag_red_wrapper">
+                    <div class="drag_red"></div>
+                </div>
+                <div class="drag_yellow_wrapper">
+                    <div class="drag_yellow"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

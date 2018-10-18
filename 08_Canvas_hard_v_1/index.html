@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title></title>
+    <link href="css/style_general.css" rel="stylesheet">
+    <link href="css/style_home.css" rel="stylesheet">
+    <script src="js/jquery-1.8.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script>
+
+        $(function () {
+
+            function main(){
+
+                var MANGLE = 12,
+                    HANGLE = 1,
+
+                    mAngl = 1,
+                    hAngl = 0;
+
+                    hArrow = $('.arr_hour'),
+                    mArrow = $('.arr_minute'),
+                    caAfter = $('.canvas-area__first-level');
+
+
+                function drawCircle(tagName, 
+                                    xp, 
+                                    yp, 
+                                    pradius, 
+                                    pstartDeg, 
+                                    pendDeg,
+                                    plineWidth,
+                                    plineColor,
+                                    callback){
+
+                    return function(){
+
+                        var canvas = document.getElementById(tagName),
+                        ctx = canvas.getContext('2d'),
+                        x = xp || canvas.offsetWidth / 2, 
+                        y = yp || canvas.offsetHeight / 2, 
+                        radius = pradius, 
+                        deg = pstartDeg,
+                        startAngle = (Math.PI/180)*deg, 
+                        endAngle = (Math.PI/180)*deg,
+                        anticlockwise = false;
+
+                        var timer = setInterval(function() {
+
+                            endAngle = (Math.PI/180)*deg;
+
+                            ctx.beginPath();
+                            ctx.lineWidth = plineWidth;
+                            ctx.strokeStyle = plineColor;
+                            ctx.closePath();
+                            ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+                            ctx.stroke();
+
+                            deg++;
+
+                            if (deg > pendDeg){
+
+                                clearInterval(timer);
+                                if(callback && typeof callback === "function"){
+                                    callback();
+                                }
+                            }
+                        }, 16);
+
+                    };   
+                }    
+
+
+                while(hAngl < 450){
+
+                    mAngl += MANGLE;
+                    hAngl +=1;
+
+                    if(hAngl === 450){mAngl -= 1;}
+
+                    $(mArrow).css({'transform':'rotate('+ mAngl +'deg)'});
+                    $(hArrow).css({'transform':'rotate('+ hAngl +'deg)'});
+
+                    $(caAfter).css({'width': hAngl+'px'});
+
+
+                    if(hAngl === 360){
+
+                        setTimeout(() => {
+
+                          drawCircle('canvas_int', null, null, 258, 270, 330, 28, "#0267b0",
+
+                            drawCircle('canvas_int', null, null, 258, 330, 360, 28, "#1a4790"))();
+                        }, 6350)
+                        
+                    }
+
+                }  
+
+               drawCircle('canvas_int', null, null, 225, 240, 270, 28, "#5c7fa8",
+
+                    drawCircle('canvas_int', null, null, 225, 270, 360, 28, "#9bcaec", 
+
+                        drawCircle('canvas_int', null, null, 225, 0, 120, 28, "#9bcaec",
+
+                            drawCircle('canvas_int', null, null, 225, 120, 180, 28, "#459bc7",
+
+                                drawCircle('canvas_int', null, null, 225, 180, 210, 28, "#3080a9")))))();
+                   
+            }
+
+            
+            main();
+
+        });
+    </script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="Stage_base">
+            <div class="canvas_area">
+                <canvas id="canvas_int" width="544" height="544"></canvas>
+              
+            </div>
+            <div class="arrow_box">
+                <div class="arr_hour"></div>
+                <div class="arr_minute"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+

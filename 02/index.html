@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title></title>
+    <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+    <div id="background">
+        
+        <div id="css">
+            
+            <div id="css-opacity"><span>CSS3<br/>FadeIn<br/>FadeOut</span></div>
+            <div id="css-rotate"><span>CSS3<br/>Transform<br/>Rotate</span></div>
+            <div id="css-scale"><span>CSS3<br/>Transform<br/>Scale</span></div>
+            <div id="css-move"><span>CSS3<br/>Transition<br/>Move</span></div>
+
+        </div>
+
+        <div id="controls">
+            
+            <div id="css-controls">
+                <div id="css-start"><span>Css<br/>Start</span></div>
+                <div id="css-reset"><span>Css<br/>Reset</span></div>
+            </div>
+
+            <div id="jquery-controls">
+                <div id="jq-start"><span>JQuery<br/>Start</span></div>
+                <div id="jq-reset"><span>JQuery<br/>Reset</span></div>
+            </div>
+        </div>
+
+        <div id="jq">
+            
+            <div id="jq-fade-in"><span>JQuery<br/>FadeIn</span></div>
+            <div id="jq-fade-out"><span>JQuery<br/>FadeOut</span></div>
+            <div id="jq-move"><span>JQuery<br/>Animate</span></div>
+            <div id="jq-scale"></div>
+            
+            <div id="jq-real-scale"><span>JQuery<br/>Zoom</span></div>
+        </div>
+
+    </div>
+
+
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/jquery-ui-1.10.4.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script>
+        $(function () {
+           
+           /* start css animation */
+           $('#css-start').on('click', function(){
+
+                $('#css-rotate').toggleClass('css-rotate');
+                $('#css-scale').toggleClass('css-scale');
+                $('#css-move').toggleClass('css-move');
+                $('#css-opacity').toggleClass('css-opacity');
+           });
+
+           /* stop css animation */
+           $('#css-reset').on('click', function(){
+
+                $('#css-rotate').toggleClass('css-rotate');
+                $('#css-scale').toggleClass('css-scale');
+                $('#css-move').toggleClass('css-move');
+                $('#css-opacity').toggleClass('css-opacity');
+
+           });
+
+           /* start js animation */
+
+            var fadeOI = null;
+
+            $('#jq-real-scale').offset({ 
+                top: $('#jq-scale').offset().top,
+                left: $('#jq-scale').offset().left});
+
+            var jqRealScaleWidth = $('#jq-real-scale').width();
+            var jqRealScaleHeight = $('#jq-real-scale').height();
+
+
+            $('#jq-start').on('click', function(){
+
+                fadeInOut();
+                move();
+                fadeOutIn();
+                scale();
+
+                fadeOI = setInterval(function(){
+
+                    fadeOutIn();
+                    fadeInOut();
+                    move();
+                    scale();
+
+                }, 4000);
+
+            });
+
+            /* stop js animation */
+            $('#jq-reset').on('click', function(){
+
+                clearInterval(fadeOI); 
+                $('#jq-fade-in').stop(true, true); 
+                $('#jq-fade-out').stop(true, true);
+                $('#jq-move').stop(true, true);
+                $('#jq-real-scale').stop(true, true);
+
+            });
+
+           /* JQuery animation */
+
+            $('#jq-fade-in').fadeTo(0, 0);
+
+            function fadeOutIn(){
+
+                $('#jq-fade-in')
+                
+                .animate({
+
+                    opacity: '1'
+                }, 2000, function(){
+
+                    $('#jq-fade-in').animate({
+
+                        opacity: 0
+                    },0);
+                })
+                .animate({
+
+                    opacity: '0'
+                },2000);
+                                
+            }
+
+            function fadeInOut(){
+
+                $('#jq-fade-out')
+                
+                .animate({
+
+                    opacity: '0'
+                }, 2000, function(){
+
+                    $('#jq-fade-out').animate({
+
+                        opacity: 1
+                    },0);
+                })
+                .animate({
+
+                    opacity: '1'
+                },2000);
+            }
+
+            function scale(){
+
+                $('#jq-real-scale')
+
+                .animate({
+
+                    width : '50%',
+                    height: '50%'
+
+                }, 2000, function(){
+
+                    $('#jq-real-scale').animate({
+
+                        width : jqRealScaleWidth,
+                        height: jqRealScaleHeight
+
+                    },0);                    
+                })
+
+                .animate({
+
+                    width : jqRealScaleWidth,
+                    height: jqRealScaleHeight
+
+                }, 2000);
+            }
+
+            function move(){
+
+                $('#jq-move')
+
+                .animate({
+
+                    top: '200px',
+                    right: '100px'
+
+                }, 2000, function(){
+
+                    $('#jq-move').animate({
+                        top: '0px',
+                        right: '0px'}, 0);
+                })
+
+                .animate({
+
+                    top: '0px',
+                    right: '0px'
+
+                }, 2000);
+            }
+
+        });
+    </script>
+</body>
+
+</html>
